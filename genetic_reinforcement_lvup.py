@@ -2,52 +2,41 @@ from collections import Counter
 from random import choices, choice
 from itertools import chain, cycle
 from pprint import pprint
-from utils_grl import select_proportional, select_maximum, random_reply
-from utils_grl import single_event_proportional, single_event_greedy
-from utils_grl import digraph_event_proportional, digraph_event_greedy
+from utils_grl import sp, sm, rr
+from utils_grl import sep, seg
+from utils_grl import dep, deg
 
 scorer = dict(SP=1, PR=1, RS=1, PS=-1, RP=-1, SR=-1, SS=0, PP=0, RR=0)
-ideal_response = {'P': 'S', 'R': 'P', 'S': 'R'}
-options = ['R', 'P', 'S']
-strategies = [random_reply, single_event_proportional, single_event_greedy,
-              digraph_event_proportional, digraph_event_greedy]
+rps = ['R', 'P', 'S']
+strategies = [rr, sep, seg, dep, deg]
 
 def human_(opposition, strategies=strategies,
-                   trials=100000, verbose=False):
+                   rounds=20):
     strategy_range = range(len(strategies))
     weights = [1] * len(strategies)
-    p1hist = []
-    p2hist = []
-    cum_score = 0
-    print(range(trials))
-    for trial in range(trials):
-        our_moves = [strategy(p1hist, p2hist) for strategy in strategies]
+    bot = [], player = [], cum_score = 0
+    print(range(rounds))
+    for trial in range(rounds):
+        bot_m_all = [strategy(bot, player) for strategy in strategies]
         i = choices(strategy_range, weights)[0]
-        our_move = our_moves[i]
+        bot_m = bot_m_all[i]
+        player_m = opposition(player, bot)
 
-        opponent_move = opposition(p2hist, p1hist)
-
-        score = scorer[our_move + opponent_move]
-        if verbose:
-            print(f'{our_move} ~ {opponent_move} = {score:+d}'
-                  f'\t\t{strategies[i].__name__}')
-            print(p1hist)
-            print(p2hist)
+        score = scorer[bot_m + player_m]
+        print(f'{bot_m} ~ {player_m} = {score:+d}'
+            f'\t\t{strategies[i].__name__}')
         cum_score += score
 
-        p1hist.append(our_move)
-        p2hist.append(opponent_move)
-        for i, our_move in enumerate(our_moves):
-            if scorer[our_move + opponent_move] == 1:
+        bot.append(bot_m)
+        player.append(player_m)
+        for i, bot_m in enumerate(bot_m_all):
+            if scorer[bot_m + player_m] == 1:
                 weights[i] += 1
-
-    print(f'---- vs. {opposition.__name__} ----')            
+        
     print('Total score:', cum_score)
-    pprint(sorted([(weight, strategy.__name__) for weight, strategy in zip(weights, strategies)]))
 
 if __name__ == '__main__':
+    def human(bot, player):
+        return input(f'Choose one of {rps!r}: ')
 
-    def human(p1hist, p2hist):
-        return input(f'Choose one of {options!r}: ')
-
-    human_(opposition=human, trials=100, verbose=True)
+    human_(opposition=human, rounds=20)
