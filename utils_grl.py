@@ -14,18 +14,18 @@ def sm(events, baseline=()):
     rel_freq = Counter(chain(baseline, events))
     return rel_freq.most_common(1)[0][0]
 
-def rr(bot, player):
+def rr(bot, player):    #random
     return choice(rps)
 
-def sep(bot, player):
+def sep(bot, player):   #proportionnel aux coups du player : la moitié du tps pierre = 1 fois sur 2 feuille
     pred = sp(player, rps)
     return rep[pred]
 
-def seg(bot, player):
+def seg(bot, player):   #joue le contre du mouv que le joueur joue le plus
     pred = sm(player, rps)
     return rep[pred]
 
-def dep(bot, player):
+def dep(bot, player):   
     rp = player[-1:]
     d = zip(player, player[1:])
     f = [b for a, b in d if a == rp]
