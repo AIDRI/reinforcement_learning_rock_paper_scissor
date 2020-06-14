@@ -1,38 +1,40 @@
 from collections import Counter
 from random import choices, choice
 from itertools import chain
-options = ['R', 'P', 'S']
-ideal_response = {'P': 'S', 'R': 'P', 'S': 'R'}
-def select_proportional(events, baseline=()):
+
+rps = ['R', 'P', 'S']
+rep = {'P': 'S', 'R': 'P', 'S': 'R'}
+
+def sp(events, baseline=()):
     rel_freq = Counter(chain(baseline, events))
     population, weights = zip(*rel_freq.items())
     return choices(population, weights)[0]
 
-def select_maximum(events, baseline=()):
+def sm(events, baseline=()):
     rel_freq = Counter(chain(baseline, events))
     return rel_freq.most_common(1)[0][0]
 
-def random_reply(p1hist, p2hist):
-    return choice(options)
+def rr(bot, player):
+    return choice(rps)
 
-def single_event_proportional(p1hist, p2hist):
-    prediction = select_proportional(p2hist, options)
-    return ideal_response[prediction]
+def sep(bot, player):
+    pred = sp(player, rps)
+    return rep[pred]
 
-def single_event_greedy(p1hist, p2hist):
-    prediction = select_maximum(p2hist, options)
-    return ideal_response[prediction]
+def seg(bot, player):
+    pred = sm(player, rps)
+    return rep[pred]
 
-def digraph_event_proportional(p1hist, p2hist):
-    recent_play = p2hist[-1:]
-    digraphs = zip(p2hist, p2hist[1:])
-    followers = [b for a, b in digraphs if a == recent_play]
-    prediction = select_proportional(followers, options)
-    return ideal_response[prediction]
+def dep(bot, player):
+    rp = player[-1:]
+    digraphs = zip(player, player[1:])
+    followers = [b for a, b in digraphs if a == rp]
+    pred = sp(followers, rps)
+    return rep[pred]
 
-def digraph_event_greedy(p1hist, p2hist):
-    recent_play = p2hist[-1:]
-    digraphs = zip(p2hist, p2hist[1:])
-    followers = [b for a, b in digraphs if a == recent_play]
-    prediction = select_maximum(followers, options)
-    return ideal_response[prediction]
+def deg(bot, player):
+    rp = player[-1:]
+    digraphs = zip(player, player[1:])
+    followers = [b for a, b in digraphs if a == rp]
+    pred = sm(followers, rps)
+    return rep[pred]
