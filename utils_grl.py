@@ -27,14 +27,14 @@ def seg(bot, player):
 
 def dep(bot, player):
     rp = player[-1:]
-    digraphs = zip(player, player[1:])
-    followers = [b for a, b in digraphs if a == rp]
-    pred = sp(followers, rps)
+    d = zip(player, player[1:])
+    f = [b for a, b in d if a == rp]
+    pred = sp(f, rps)
     return rep[pred]
 
 def deg(bot, player):
     rp = player[-1:]
-    digraphs = zip(player, player[1:])
-    followers = [b for a, b in digraphs if a == rp]
-    pred = sm(followers, rps)
+    d = zip(player, player[1:])
+    f = [b for a, b in d if a == rp]
+    pred = sm(f, rps)
     return rep[pred]
