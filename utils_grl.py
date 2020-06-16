@@ -2,8 +2,8 @@ from collections import Counter
 from random import choices, choice
 from itertools import chain
 
-rps = ['R', 'P', 'S']
-rep = {'P': 'S', 'R': 'P', 'S': 'R'}
+rps = ['R', 'P', 'S'] #all possible moves
+rep = {'P': 'S', 'R': 'P', 'S': 'R'} #reponse for each case
 
 def sp(events, baseline=()):
     rel_freq = Counter(chain(baseline, events))
