@@ -51,5 +51,5 @@ class Bot(discord.Client):
 
 if __name__ == "__main__":
 	bot = Bot()
-	bot.run("NzIwMzY2MTg4NzQ3ODE3MDEx.XuE7cQ.PP4nayoqee1POZQ3_NiOAXv6Pmw")
+	bot.run("YOUR TOKEN")
 	print(self.input)
