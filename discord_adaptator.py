@@ -1,6 +1,6 @@
 import discord
 import time
-
+from dotenv import load_dotenv
 
 class Bot(discord.Client):
 	def __init__(self):
@@ -50,6 +50,8 @@ class Bot(discord.Client):
 			await message.channel.send(str("End, please use !start another time to play"))
 
 if __name__ == "__main__":
+	load_dotenv()
+	TOKEN = os.getenv('DISCORD_TOKEN')
 	bot = Bot()
-	bot.run("YOUR TOKEN")
+	bot.run(TOKEN)
 	print(self.input)
