@@ -28,7 +28,6 @@ def human_(opposition, rounds = 20, strategies=strategies): #functiun to play : 
         #asking the move of the player : oppostion() called the function human()
         while num_it == pre:
             player_m, num_it = opposition(player, bot)
-            print(player_m, num_it)
             time.sleep(0.05)
 
         pre = num_it
@@ -51,7 +50,7 @@ def human_(opposition, rounds = 20, strategies=strategies): #functiun to play : 
 
 
 def human(bot, player): #it is the function to ask the player to move.
-    with open("markov.txt", "r") as s: #we return him choice between R (rock) P (paper) S (scissors)
+    with open("input.txt", "r") as s: #we return him choice between R (rock) P (paper) S (scissors)
         for line in s:
             return line[0], line[1]
 
@@ -60,7 +59,7 @@ def human(bot, player): #it is the function to ask the player to move.
 pre_match = 0
 
 while True:
-    with open("markov.txt", "r") as f:
+    with open("input.txt", "r") as f:
         for line in f:
             if pre_match != int(line[2]):
                 pre_match = int(line[2])
