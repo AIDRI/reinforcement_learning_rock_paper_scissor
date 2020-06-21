@@ -34,7 +34,7 @@ class Bot(discord.Client):
 				self.num_it=0
 			print(self.input_)
 			print(self.num_it)
-			with open("markov.txt", "w+") as f:
+			with open("input.txt", "w+") as f:
 				f.write(self.input_ + str(self.num_it) + str(self.num_match))
 
 		if (message.content.startswith("S") or message.content.startswith("P") or message.content.startswith("R") and self.match_start == True):
